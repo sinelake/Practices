@@ -55,6 +55,17 @@ public class recursion {
 		}
 	}
 	
+	public static int getMaxIter(int[] x) {
+		int max = x[0];
+		for(int i=0;i<x.length;i++) {
+			if (x[i] > max) {
+				max = x[i];
+			}
+		}
+		
+		return max;
+	}
+	
 	public static void hanoi(int n) {
 		hanoiRec(n, 1, 2, 3);
 	}
@@ -71,7 +82,9 @@ public class recursion {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		hanoi(10);
+		hanoi(5);
+		System.out.println(getMax(new int[] {1,4,2,5,87,7,4,1,4,-1,46,0}));
+		System.out.println(getMaxIter(new int[] {1,4,2,5,87,7,4,1,4,-1,46,0}));
 	}
 
 }

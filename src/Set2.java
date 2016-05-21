@@ -1,14 +1,14 @@
 
-public class Set {
+public class Set2 {
 	private int[] ListofElements;
 	private int numElements;
 
-	public Set() {
-		this.ListofElements = new int[0];
+	public Set2() {
+		this.ListofElements = new int[4];
 		this.numElements = 0;
 	}
 
-	public Set(int[] list) {
+	public Set2(int[] list) {
 		this();
 		for (int i = 0; i < list.length; i++) {
 			this.add(list[i]);
@@ -19,23 +19,14 @@ public class Set {
 		if (this.contains(x)) {
 			return;
 		} else {
-			int[] newList = new int[this.numElements + 1];
-
-			int index = this.numElements;
-			for (int i = 0; i < this.numElements; i++) {
-				if (this.ListofElements[i] < x) {
+			if (this.ListofElements.length == this.numElements) {
+				int[] newList = new int[this.ListofElements.length * 2];
+				for (int i = 0; i < this.numElements; i++) {
 					newList[i] = this.ListofElements[i];
-				} else {
-					index = i;
-					break;
 				}
+				this.ListofElements = newList;
 			}
-			newList[index] = x;
-			for (int i = index + 1; i < this.numElements + 1; i++) {
-				newList[i] = this.ListofElements[i - 1];
-			}
-
-			this.ListofElements = newList;
+			this.ListofElements[this.numElements] = x;
 			this.numElements++;
 		}
 	}
@@ -44,22 +35,16 @@ public class Set {
 		if (!this.contains(x)) {
 			return;
 		} else {
-			int[] result = new int[this.numElements - 1];
-
-			int index = this.numElements - 1;
+			int index = 0;
 			for (int i = 0; i < this.numElements; i++) {
-				if (this.ListofElements[i] != x) {
-					result[i] = this.ListofElements[i];
-				} else {
+				if (this.ListofElements[i] == x) {
 					index = i;
 					break;
 				}
 			}
 			for (int i = index; i < this.numElements - 1; i++) {
-				result[i] = this.ListofElements[i + 1];
+				this.ListofElements[i] = this.ListofElements[i + 1];
 			}
-
-			this.ListofElements = result;
 			this.numElements--;
 		}
 	}
@@ -73,7 +58,7 @@ public class Set {
 		return false;
 	}
 
-	public boolean isSubsetOf(Set x) {
+	public boolean isSubsetOf(Set2 x) {
 		for (int i = 0; i < this.numElements; i++) {
 			if (x.contains(ListofElements[i])) {
 				continue;
@@ -84,7 +69,7 @@ public class Set {
 		return true;
 	}
 
-	public boolean equals(Set x) {
+	public boolean equals(Set2 x) {
 		return (this.isSubsetOf(x) && x.isSubsetOf(this));
 	}
 
@@ -94,15 +79,30 @@ public class Set {
 
 	public String toString() {
 		String result = new String();
+		int[] sortedList = bubbleSort(this.ListofElements);
 		for (int i = 0; i < this.numElements; i++) {
-			result += String.valueOf(this.ListofElements[i]) + " ";
+			result += String.valueOf(sortedList[i]) + " ";
 		}
 
 		return result;
 	}
+	
+	private int[] bubbleSort(int[] list) {
+		int temp;
+		for(int i=0;i<this.numElements-1;i++) {
+			for(int j=0;j<this.numElements-1-i;j++) {
+				if(list[j] > list[j+1]) {
+					temp = list[j];
+					list[j] = list[j+1];
+					list[j+1] = temp;
+				}
+			}
+		}
+		return list;
+	}
 
-	public Set intersection(Set x) {
-		Set result = new Set();
+	public Set2 intersection(Set2 x) {
+		Set2 result = new Set2();
 		for (int i = 0; i < this.numElements; i++) {
 			if (x.contains(this.ListofElements[i])) {
 				result.add(this.ListofElements[i]);
@@ -112,8 +112,8 @@ public class Set {
 		return result;
 	}
 
-	public Set union(Set x) {
-		Set result = new Set();
+	public Set2 union(Set2 x) {
+		Set2 result = new Set2();
 
 		for (int i = 0; i < this.numElements; i++) {
 			result.add(this.ListofElements[i]);
@@ -124,8 +124,8 @@ public class Set {
 		return result;
 	}
 
-	public Set subtract(Set x) {
-		Set result = new Set();
+	public Set2 subtract(Set2 x) {
+		Set2 result = new Set2();
 
 		for (int i = 0; i < this.numElements; i++) {
 			result.add(this.ListofElements[i]);
@@ -137,12 +137,12 @@ public class Set {
 	}
 
 	public static void setTest() {
-		Set set1 = new Set(new int[] { 1, 3, 12, 4, 0, 0, 1, 2, -5, -4, -1, 1, 9, 341, -148 });
-		Set set2 = new Set(new int[] { 234, 1, 3, -1, -2, -2, -2, -2, -2, -2, 0 });
-		Set set3 = set1.intersection(set2);
-		Set set4 = set2.intersection(set2);
-		Set set5 = set1.union(set2);
-		Set set6 = set4.subtract(set1);
+		Set2 set1 = new Set2(new int[] { 1, 3, 12, 4, 0, 0, 1, 2, -5, -4, -1, 1, 9, 341, -148 });
+		Set2 set2 = new Set2(new int[] { 234, 1, 3, -1, -2, -2, -2, -2, -2, -2, 0 });
+		Set2 set3 = set1.intersection(set2);
+		Set2 set4 = set2.intersection(set2);
+		Set2 set5 = set1.union(set2);
+		Set2 set6 = set4.subtract(set1);
 
 		System.out.println(set1.toString());
 		System.out.println(set2.toString());
@@ -150,7 +150,7 @@ public class Set {
 		System.out.println(set4.toString());
 		System.out.println(set5.toString());
 		System.out.println(set6.toString());
-		
+
 		System.out.println(set2.equals(set4));
 		System.out.println(set5.isSubsetOf(set1));
 		System.out.println(set1.isSubsetOf(set5));
@@ -179,8 +179,8 @@ public class Set {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		long startTime = System.nanoTime();
-		for (int i=0;i<1;i++)
-		setTest();
+		for (int i = 0; i < 1; i++)
+			setTest();
 		long endTime = System.nanoTime();
 		System.out.println("Execution time : " + (endTime - startTime));
 	}
