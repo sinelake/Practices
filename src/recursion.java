@@ -118,6 +118,28 @@ public class recursion {
 		MergeSort(l, mid + 1, end);
 		Merge(l, start, end);
 	}
+	
+	public static int knapsack(int start, int[] items, int weight) {
+		if (start >= items.length) {
+			return 0;
+		}
+		
+		if (items[start] > weight) {
+			return knapsack(start + 1, items, weight); 
+		} else {
+			int max = 0;
+			int a = items[start] + knapsack(start + 1, items, weight - items[start]);
+			int b = knapsack(start + 1, items, weight);
+			
+			if (a > b) {
+				max = a;
+			} else {
+				max = b;
+			}
+			
+			return max;
+		} 
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -126,6 +148,8 @@ public class recursion {
 		for (int i = 0; i < l.length; i++) {
 			System.out.println(l[i]);
 		}
+		
+		System.out.println(knapsack(0, new int[] {6,1,7,5,3}, 15));
 	}
 
 }
