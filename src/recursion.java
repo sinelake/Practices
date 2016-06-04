@@ -54,18 +54,18 @@ public class recursion {
 			return max;
 		}
 	}
-	
+
 	public static int getMaxIter(int[] x) {
 		int max = x[0];
-		for(int i=0;i<x.length;i++) {
+		for (int i = 0; i < x.length; i++) {
 			if (x[i] > max) {
 				max = x[i];
 			}
 		}
-		
+
 		return max;
 	}
-	
+
 	public static void hanoi(int n) {
 		hanoiRec(n, 1, 2, 3);
 	}
@@ -80,11 +80,52 @@ public class recursion {
 		}
 	}
 
+	private static void Merge(int[] l, int start, int end) {
+		int[] result = new int[end - start + 1];
+		int mid = start + (end - start) / 2;
+
+		int j = start;
+		int k = mid + 1;
+		for (int i = start; i <= end; i++) {
+			if (j <= mid && k <= end) {
+				if (l[j] < l[k]) {
+					result[i - start] = l[j];
+					j++;
+				} else {
+					result[i - start] = l[k];
+					k++;
+				}
+			} else if (j > mid) {
+				result[i - start] = l[k];
+				k++;
+			} else if (k > end) {
+				result[i - start] = l[j];
+				j++;
+			}
+		}
+		
+		for (int i = start; i <= end; i++) {
+			l[i] = result[i - start];
+		}
+	}
+
+	public static void MergeSort(int[] l, int start, int end) {
+		if (start >= end) {
+			return;
+		}
+		int mid = start + (end - start) / 2;
+		MergeSort(l, start, mid);
+		MergeSort(l, mid + 1, end);
+		Merge(l, start, end);
+	}
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		hanoi(5);
-		System.out.println(getMax(new int[] {1,4,2,5,87,7,4,1,4,-1,46,0}));
-		System.out.println(getMaxIter(new int[] {1,4,2,5,87,7,4,1,4,-1,46,0}));
+		int[] l = new int[] { 1, 2, 4, 5, 3, 6, 5, 3, 2, 5, 6, 7, 4 };
+		MergeSort(l, 0, 12);
+		for (int i = 0; i < l.length; i++) {
+			System.out.println(l[i]);
+		}
 	}
 
 }
